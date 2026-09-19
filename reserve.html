@@ -24,14 +24,14 @@
 <meta property="og:image" content="https://ideamyongji.github.io/assets/img/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="IDEA — Institute for Design Engineering with AI, 명지대학교 인공지능 융합 디자인-엔지니어링 사업단">
+<meta property="og:image:alt" content="IDEA, Institute for Design Engineering with AI, 명지대학교 인공지능 융합 디자인-엔지니어링 사업단">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="IDEA 라운지 예약 | IDEA 사업단">
 <meta name="twitter:description" content="IDEA 라운지(1공학관 513호) 테이블 예약 시스템입니다.">
 <meta name="twitter:image" content="https://ideamyongji.github.io/assets/img/og-cover.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20260919">
 <style>
   .booking-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .booking-table th, .booking-table td { border: 1px solid var(--border); padding: 6px; text-align: center; }
@@ -205,19 +205,18 @@
                width="1600" height="1200" loading="lazy" decoding="async"
                alt="IDEA 라운지 내부. 원형 협업 테이블 4개와 이동식 의자, 전면 벽에 웹캠이 달린 대형 전자칠판이 설치되어 있습니다.">
         </picture>
-        <figcaption>IDEA 라운지 (1공학관 513호) — 팀별 협업 테이블 4개와 전면 전자칠판</figcaption>
+        <figcaption>IDEA 라운지 (1공학관 513호). 팀별 협업 테이블 4개와 전면 전자칠판</figcaption>
       </figure>
       <ul class="space-specs">
         <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lounge"></use></svg><b>위치</b><span>제1공학관 513호</span></li>
         <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-people"></use></svg><b>규모</b><span>원형 협업 테이블 4개 · 테이블당 4인 (최대 16인)</span></li>
-        <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-gear"></use></svg><b>테이블 설비</b><span>테이블별 모니터 설치 — 팀 단위 화면 공유 및 실습</span></li>
+        <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-gear"></use></svg><b>테이블 설비</b><span>테이블별 모니터 설치. 팀 단위 화면 공유 및 실습</span></li>
         <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-palette"></use></svg><b>전면 설비</b><span>전자칠판 · 웹캠 (발표, 온라인 멘토링 세션)</span></li>
         <li><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bolt"></use></svg><b>이용</b><span>상시 개방 · 예약제 · 1인당 하루 최대 2시간</span></li>
       </ul>
     </div>
 
     <div class="section-head" style="margin-bottom:32px;">
-      <span class="eyebrow"><span class="dot"></span>테이블 현황</span>
       <h2>IDEA 라운지 테이블</h2>
       <p>테이블1~3은 &quot;AI 디자인-엔지니어링&quot; 마이크로디그리 참여 학생 전용, 테이블4는 전체 학생이 이용할 수 있습니다.</p>
     </div>
@@ -230,7 +229,6 @@
     </div>
 
     <div class="section-head" style="margin:56px 0 24px;">
-      <span class="eyebrow"><span class="dot"></span>예약하기</span>
       <h2>테이블 예약</h2>
       <p>날짜를 선택하고 원하는 시간대의 &quot;예약하기&quot;를 누르면 즉시 예약됩니다. 같은 시간대는 한 사람만 예약할 수 있고, 1인당 하루 최대 2시간, 예약 가능한 2주 내에는 최대 6시간까지 예약할 수 있습니다.</p>
     </div>
@@ -254,7 +252,6 @@
     </div>
 
     <div class="section-head" style="margin:56px 0 24px;">
-      <span class="eyebrow"><span class="dot"></span>내 예약</span>
       <h2>예약 내역</h2>
     </div>
     <div id="my-reservations" class="card"></div>
@@ -310,8 +307,8 @@
 
 <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
-<script src="assets/js/main.js"></script>
-<script type="module" src="assets/js/reserve.js"></script>
+<script src="assets/js/main.js?v=20260919"></script>
+<script type="module" src="assets/js/reserve.js?v=20260919"></script>
 <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));

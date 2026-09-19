@@ -10,35 +10,68 @@
    ========================================================================== */
 
 :root {
+  /* ── 브랜드 ────────────────────────────────────────────────────────────
+     4색은 IDEA 인재상(I·D·E·A) 레전드 한 곳에서만 함께 등장합니다.
+     그 외 모든 곳의 액센트는 --accent 하나로 통일합니다. */
   --blue: #2e7de0;
   --teal: #16a085;
   --orange: #ee6b43;
   --gold: #f5a623;
 
-  /* 같은 계열 옅은 틴트 배경 위에 얹는 "텍스트 전용" 진한 변형.
-     --blue/--teal를 8~9% 틴트 위에 그대로 쓰면 채도만 다른 두 색이라
-     대비가 3:1대로 떨어지므로(WCAG AA 미달) 텍스트는 반드시 -700을 씁니다.
-     측정값: blue-700 5.95:1 / teal-700 5.46:1 (기준 4.5:1) */
-  --blue-700: #1d5cb0;
+  /* 단일 액센트. 브랜드를 바꾸려면 이 두 줄만 고치면 전 페이지가 따라옵니다.
+     --accent 는 "칠하는 색"이자 "읽는 색" — 흰 글자를 얹어도(6.54:1),
+     흰 배경에 글자로 올려도(6.54:1) AA를 통과하는 유일한 지점입니다.
+     기존 --blue(#2e7de0)를 버튼 fill로 쓰면 흰 글자가 4.10:1로 미달이었습니다. */
+  --accent: #1d5cb0;
+  --accent-hover: #17498c;
+  --accent-rgb: 46 125 224;                    /* 틴트·링 전용 밝은 원색 */
+  --accent-tint: rgb(var(--accent-rgb) / 8%);
+  --accent-tint-strong: rgb(var(--accent-rgb) / 14%);
+
+  /* ── 텍스트: 별도 회색 팔레트가 아니라 잉크 한 색의 불투명도 램프 ──────
+     실측 대비(흰 배경): 100%=17.75  82%=10.11  64%=5.35  ← 여기까지가 본문 하한
+     그 아래(52%=3.60, 40%=2.53)는 AA 미달이라 "글자"에는 쓰지 않습니다. */
+  --ink: 16 24 40;
+  --text-primary:   rgb(var(--ink));
+  --text-secondary: rgb(var(--ink) / 82%);
+  --text-tertiary:  rgb(var(--ink) / 64%);
+  --text-quiet:     rgb(var(--ink) / 44%);     /* 비텍스트 전용(구분선·아이콘) */
+
+  /* 하위호환: 기존 규칙이 참조하는 이름을 램프에 매핑 */
+  --ink-900: var(--text-primary);
+  --ink-700: var(--text-secondary);
+  --ink-500: var(--text-tertiary);
+  --ink-300: var(--text-quiet);
+  --ink-100: #eaecf0;
+  --blue-700: var(--accent);
   --teal-700: #0d7059;
 
-  --ink-900: #101828;
-  --ink-700: #364153;
-  --ink-500: #667085;
-  --ink-300: #98a2b3;
-  --ink-100: #eaecf0;
-
+  /* ── 표면: 평면 ───────────────────────────────────────────────────────
+     코드잇은 elevation/shadow 토큰을 아예 발행하지 않습니다. 이 사이트도
+     카드 그림자를 걷어내고 헤어라인으로 면을 나눕니다. 그림자는 실제로
+     떠 있는 것(드롭다운·라이트박스·토스트·모바일 메뉴)에만 남깁니다. */
   --bg: #ffffff;
-  --bg-soft: #f7f9fc;
-  --bg-soft-2: #eef2fa;
-  --border: #e4e9f2;
+  --bg-soft: #f8fafc;
+  --bg-soft-2: #eef2f8;
+  --border: #e6eaf1;
+  --border-strong: rgb(var(--ink) / 14%);
+  --hairline: rgb(var(--ink) / 8%);
 
-  --radius-lg: 24px;
-  --radius-md: 16px;
-  --radius-sm: 10px;
+  /* ── 라운드: 안쪽 박스는 바깥보다 한 단계 작게 ────────────────────────── */
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 16px;   /* 기본값 */
+  --radius-sm: 12px;
   --radius-xs: 8px;
 
-  /* 스페이싱 스케일 (4px 기준) */
+  /* ── 간격 ─────────────────────────────────────────────────────────────
+     섹션 여백을 3단으로 나눠 리듬을 만듭니다. 이전에는 전 섹션이 96px로
+     균일해서 스크롤 내내 같은 박자가 반복됐습니다. */
+  --section-xl: clamp(88px, 11vw, 168px);
+  --section-lg: clamp(72px, 8vw, 120px);
+  --section-md: clamp(56px, 6vw, 88px);
+
+  --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
@@ -47,26 +80,32 @@
   --space-7: 56px;
   --space-8: 96px;
 
-  /* 타이포 스케일 */
+  /* ── 타이포 ───────────────────────────────────────────────────────────
+     큰 글자일수록 자간을 조입니다(한글 디스플레이에서 특히 중요). */
   --fs-1: 13px;
   --fs-2: 14px;
   --fs-3: 16px;
+  --fs-4: 18px;
   --fs-5: clamp(26px, 3vw, 36px);
   --fs-6: clamp(32px, 4.2vw, 52px);
+  --fs-display: clamp(28px, 5.2vw, 64px);
+  --track-display: -0.035em;
+  --track-title: -0.025em;
+  --track-body: -0.01em;
 
-  /* 스티키 헤더/서브내비 높이 — 앵커 오프셋과 subnav top이 이 값을 공유합니다 */
   --header-h: 78px;
   --sticky-stack: 150px;
 
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
-  --shadow-lg: 0 24px 48px -12px rgba(16, 24, 40, 0.18);
+  --shadow-sm: 0 1px 2px rgb(var(--ink) / 5%);
+  --shadow-md: 0 8px 24px rgb(var(--ink) / 8%);
+  --shadow-lg: 0 24px 48px -12px rgb(var(--ink) / 18%);
 
   --gradient-hero: linear-gradient(120deg, #12233f 0%, #16385f 45%, #1c4f6b 75%, #1a5457 100%);
   --gradient-brand: linear-gradient(90deg, var(--blue), var(--teal) 50%, var(--orange) 85%, var(--gold));
 
   --container: 1160px;
 }
+
 
 * { box-sizing: border-box; }
 /* 스티키 헤더(78px) + 서브내비(약 59px) 아래로 앵커가 숨지 않도록 오프셋을 줍니다.
@@ -117,7 +156,8 @@ a { color: inherit; text-decoration: none; }
 ul { list-style: none; margin: 0; padding: 0; }
 button { font-family: inherit; cursor: pointer; }
 
-h1, h2, h3, h4 { margin: 0; color: var(--ink-900); font-weight: 800; letter-spacing: -0.02em; }
+h1, h2, h3, h4 { margin: 0; color: var(--text-primary); font-weight: 800; letter-spacing: var(--track-title); }
+h1 { letter-spacing: var(--track-display); }
 
 .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
 
@@ -128,23 +168,36 @@ h1, h2, h3, h4 { margin: 0; color: var(--ink-900); font-weight: 800; letter-spac
   gap: 8px;
   font-size: var(--fs-1);
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--blue-700);
-  background: rgba(46, 125, 224, 0.08);
-  border: 1px solid rgba(46, 125, 224, 0.18);
-  padding: 6px 14px;
-  border-radius: 999px;
-  margin-bottom: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0 0 var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-strong);
 }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gradient-brand); }
 
-.section { padding: var(--space-8) 0; }
+.section { padding: var(--section-lg) 0; }
+/* 섹션 여백 3단. 같은 박자가 9번 반복되던 스크롤에 강약을 만듭니다. */
+.section--air  { padding: var(--section-xl) 0; }
+.section--tight2 { padding: var(--section-md) 0; }
 .section--soft { background: var(--bg-soft); }
 .section--tight { padding: 64px 0; }
 
 .section-head { max-width: 720px; margin: 0 0 var(--space-7); }
-.section-head h2 { font-size: var(--fs-5); line-height: 1.3; }
-.section-head p { margin-top: var(--space-3); font-size: var(--fs-3); color: var(--ink-500); }
+.section-head h2 { font-size: var(--fs-5); line-height: 1.3; letter-spacing: var(--track-title); }
+.section-head p { margin-top: var(--space-4); font-size: var(--fs-3); color: var(--text-tertiary); line-height: 1.7; }
+
+/* 헤더 변주 — 9개 섹션이 전부 "eyebrow + h2 + p" 한 형태였습니다.
+   --display 는 라벨 없이 큰 제목만으로 구간을 여는 형태,
+   --center 는 페이지에서 한 번만 쓰는 중앙 정렬 모먼트입니다. */
+.section-head--display { max-width: 880px; margin-bottom: var(--space-8); }
+.section-head--display h2 {
+  font-size: var(--fs-display); line-height: 1.18; letter-spacing: var(--track-display);
+}
+.section-head--display p { margin-top: var(--space-5); font-size: var(--fs-4); max-width: 620px; }
+.section-head--center { max-width: 760px; margin-left: auto; margin-right: auto; text-align: center; }
+.section-head--center p { margin-left: auto; margin-right: auto; }
 
 .btn {
   display: inline-flex;
@@ -159,12 +212,14 @@ h1, h2, h3, h4 { margin: 0; color: var(--ink-900); font-weight: 800; letter-spac
   white-space: nowrap;
 }
 .btn:hover { transform: translateY(-2px); }
-.btn--primary { background: var(--blue); color: #fff; box-shadow: 0 8px 20px rgba(46,125,224,.28); }
-.btn--primary:hover { background: #2569c9; }
+/* 흰 글자 대비: --blue(#2e7de0) 위에서는 4.10:1로 AA 미달이었습니다.
+   --accent(#1d5cb0)에서 6.54:1. 그림자도 걷어 평면 기조에 맞춥니다. */
+.btn--primary { background: var(--accent); color: #fff; }
+.btn--primary:hover { background: var(--accent-hover); }
 .btn--ghost { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.35); }
 .btn--ghost:hover { background: rgba(255,255,255,.16); }
-.btn--outline { background: #fff; color: var(--ink-900); border-color: var(--border); }
-.btn--outline:hover { border-color: var(--blue); color: var(--blue); }
+.btn--outline { background: #fff; color: var(--text-primary); border-color: var(--border-strong); }
+.btn--outline:hover { border-color: var(--accent); color: var(--accent); }
 .btn--sm { padding: 9px 18px; font-size: 13px; }
 
 /* ---------- 헤더 ---------- */
@@ -422,9 +477,11 @@ a.hero-shot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 .card {
   background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
-  padding: 30px; box-shadow: var(--shadow-sm); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  padding: var(--space-6); transition: border-color .2s ease, background .2s ease;
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(46,125,224,.25); }
+/* 평면 표면: 그림자 대신 헤어라인. 카드가 "떠 있다"는 신호는 실제로 떠 있는
+   것(드롭다운·라이트박스·토스트)에만 남기고, 본문 카드는 면으로 구분합니다. */
+.card:hover { border-color: var(--border-strong); background: var(--bg-soft); }
 .card .icon {
   width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
   font-size: 20px; font-weight: 800; margin-bottom: 18px;
@@ -447,8 +504,15 @@ a.hero-shot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .card:hover .icon--neutral { background: rgba(46, 125, 224, 0.14); }
 .icon--letter { background: var(--bg-soft-2); color: var(--blue-700); font-size: 20px; letter-spacing: -0.02em; }
 
-.card h3 { font-size: 18px; margin-bottom: 10px; }
-.card p { font-size: 14.5px; color: var(--ink-500); margin: 0; }
+.card h3 { font-size: var(--fs-4); margin-bottom: var(--space-3); }
+/* 카드 상단의 분류 라벨. "유형 — 이름"처럼 대시로 잇던 제목을
+   유형(작은 라벨) + 이름(제목) 2단으로 나눠 위계를 만듭니다.
+   섹션 eyebrow와 달리 대문자·자간 처리를 하지 않아 리듬을 흐리지 않습니다. */
+.card-kicker {
+  display: block; font-size: var(--fs-1); font-weight: 700;
+  color: var(--accent); letter-spacing: 0; margin-bottom: var(--space-1);
+}
+.card p { font-size: 15px; line-height: 1.7; color: var(--text-tertiary); margin: 0; }
 .card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
 .card .tags span { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--bg-soft-2); color: var(--ink-700); }
 
@@ -593,8 +657,8 @@ table td.center, table th.center { text-align: center; }
 /* 재학생 수 배지는 "수량"을 나타내므로 학과별로 색을 달리하지 않습니다.
    학과 구분은 제목과 아이콘이 이미 하고 있습니다. */
 .dept-card .badge {
-  font-size: 12px; font-weight: 800; padding: 5px 12px; border-radius: 999px;
-  color: var(--ink-700); background: var(--bg-soft-2); font-variant-numeric: tabular-nums;
+  font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: var(--radius-xs);
+  color: var(--text-secondary); background: var(--bg-soft-2); font-variant-numeric: tabular-nums;
 }
 
 /* ---------- 프로필(교수) ---------- */
@@ -658,7 +722,7 @@ button.news-item.is-button[aria-expanded="true"] .arrow { transform: rotate(90de
 .gallery-item.has-multiple::after { transform: rotate(-1.6deg) translate(-5px, 7px); z-index: -1; }
 .gallery-media {
   position: relative; z-index: 1; display: block; border-radius: var(--radius-md); overflow: hidden;
-  border: 1px solid var(--border); background: #fff; box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border); background: #fff;
 }
 .gallery-media img {
   display: block; width: 100%; height: auto; transition: transform .35s ease;
@@ -742,7 +806,7 @@ button.news-item.is-button[aria-expanded="true"] .arrow { transform: rotate(90de
 .space-intro { display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; align-items: center; }
 .space-photo {
   margin: 0; border-radius: var(--radius-md); overflow: hidden;
-  border: 1px solid var(--border); box-shadow: var(--shadow-md); background: var(--bg-soft-2);
+  border: 1px solid var(--border); background: var(--bg-soft-2);
 }
 .space-photo img { display: block; width: 100%; height: auto; }
 .space-photo figcaption {
@@ -987,5 +1051,9 @@ button.news-item.is-button[aria-expanded="true"] .arrow { transform: rotate(90de
 
 @media (max-width: 600px) {
   .footer-top { grid-template-columns: 1fr; }
+  /* 모바일에서도 강약은 남깁니다. 전부 같은 값으로 눌러버리면
+     좁은 화면에서 섹션 경계가 사라져 한 덩어리로 읽힙니다. */
   .section { padding: 64px 0; }
+  .section--air { padding: 88px 0; }
+  .section--tight2 { padding: 48px 0; }
 }

@@ -5,7 +5,7 @@
 // 앱 셸(style.css / main.js 포함)이 바뀌면 버전을 올려, activate 시 옛 캐시를 비우고
 // 오프라인용 사본이 새 배포와 일치하도록 합니다. (fetch는 네트워크 우선이므로
 // 온라인 사용자는 버전과 무관하게 항상 최신 파일을 받습니다.)
-const CACHE_NAME = "idea-lounge-v3";
+const CACHE_NAME = "idea-lounge-v4";
 const APP_SHELL = [
   "/reserve.html",
   "/assets/css/style.css",
