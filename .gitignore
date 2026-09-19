@@ -6,3 +6,8 @@ Thumbs.db
 # 라운지 사진 원본(2.7MB). 웹에는 assets/images/lounge/idea-lounge_*.{jpg,webp} 만
 # 사용하므로, 원본은 로컬에만 두고 저장소에 커밋하지 않습니다.
 assets/images/lounge/IDEA lounge.jpg
+
+# 로컬 AI 도구 모음(디자인 레퍼런스 74종 + 스킬 22종, 462개 파일 / 4.8MB).
+# 사이트 코드와 무관한 개발 환경 파일이고, 이 저장소는 공개이므로 포함하지 않습니다.
+# 스킬을 실제로 쓰려면 ~/.claude/skills/ 또는 .claude/skills/ 로 옮겨야 합니다.
+.claude/ai-skills/
