@@ -53,4 +53,4 @@ python -m http.server 8000     # 저장소 루트에서. http://localhost:8000
 - `404.html` — 없는 주소로 들어오면 GitHub Pages가 보여주는 안내 페이지입니다. 어느 깊이의 주소에서도 열리므로 경로는 모두 `/`로 시작합니다.
 - `sitemap.xml`·`robots.txt` — 검색엔진용 공개 페이지 목록과 수집 규칙입니다. 공개 페이지를 추가·삭제하면 `sitemap.xml`도 함께 고쳐 주세요.
   관리자 페이지 두 개는 `robots.txt`에서 수집을 막아 두었습니다.
-- `assets/js/main.js`, `assets/js/news-loader.js`, `assets/icons/`는 이전 디자인의 자산으로, 현재 어느 페이지도 불러오지 않습니다.
+- `assets/css/style.css`는 이전 디자인의 스타일시트로, 지금은 운영 페이지의 기본 컴포넌트(카드·버튼·입력창·탭 등)용으로만 남아 있습니다.

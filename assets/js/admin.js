@@ -181,7 +181,7 @@ async function uploadFileAndGetPath(file, folder, message) {
   let payload = file;
 
   if (shrunk) {
-    // 파일명 끝에 실제 픽셀 치수를 남깁니다. news-loader가 이걸 읽어 <img>에
+    // 파일명 끝에 실제 픽셀 치수를 남깁니다. 리뉴얼 사이트(site/src/newsData.ts의 sizeOf)가 이걸 읽어 <img>에
     // width/height를 채우고, 사진 로드 중 레이아웃이 튀는 현상을 막습니다.
     const stem = safeName.replace(/\.[^.]+$/, '');
     safeName = `${stem}_${shrunk.width}x${shrunk.height}.${shrunk.ext}`;
