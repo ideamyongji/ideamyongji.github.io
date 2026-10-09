@@ -50,4 +50,7 @@ python -m http.server 8000     # 저장소 루트에서. http://localhost:8000
 - 운영 페이지(`admin.html`·`reserve.html`·`reserve-admin.html`)는 `assets/css/style.css` 위에 `assets/css/renewal-chrome.css`를 덧씌워
   리뉴얼 디자인(색·글꼴·유리 카드·내비·푸터)으로 맞춥니다. `reserve.html`의 내비 동작은 `assets/js/renewal-chrome.js`가 담당합니다.
   리뉴얼 사이트의 메뉴(`site/src/components/Chrome.tsx`)를 바꾸면 `reserve.html`의 내비·푸터도 함께 고쳐 주세요.
+- `404.html` — 없는 주소로 들어오면 GitHub Pages가 보여주는 안내 페이지입니다. 어느 깊이의 주소에서도 열리므로 경로는 모두 `/`로 시작합니다.
+- `sitemap.xml`·`robots.txt` — 검색엔진용 공개 페이지 목록과 수집 규칙입니다. 공개 페이지를 추가·삭제하면 `sitemap.xml`도 함께 고쳐 주세요.
+  관리자 페이지 두 개는 `robots.txt`에서 수집을 막아 두었습니다.
 - `assets/js/main.js`, `assets/js/news-loader.js`, `assets/icons/`는 이전 디자인의 자산으로, 현재 어느 페이지도 불러오지 않습니다.
