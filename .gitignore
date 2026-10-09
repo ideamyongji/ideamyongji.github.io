@@ -16,3 +16,7 @@ assets/images/lounge/IDEA lounge.jpg
 site/node_modules/
 site/dist/
 site/*.tsbuildinfo
+
+# 처음 받은 로고 원본(image/). 사이트에서는 brand/·orig/ 의 가공본만 쓰므로
+# 원본은 로컬에만 보관하고 공개 저장소에는 올리지 않습니다.
+image/
