@@ -11,3 +11,8 @@ assets/images/lounge/IDEA lounge.jpg
 # 사이트 코드와 무관한 개발 환경 파일이고, 이 저장소는 공개이므로 포함하지 않습니다.
 # 스킬을 실제로 쓰려면 ~/.claude/skills/ 또는 .claude/skills/ 로 옮겨야 합니다.
 .claude/ai-skills/
+
+# 리뉴얼 소스(site/)의 빌드 도구 산출물
+site/node_modules/
+site/dist/
+site/*.tsbuildinfo

@@ -1,73 +1,51 @@
 # IDEA 사업단 홈페이지
 
 인공지능 융합 디자인-엔지니어링 사업단(IDEA, Institute for Design Engineering with AI) 공식 홈페이지입니다.
-명지대학교 산업경영공학과·비주얼커뮤니케이션디자인학과·인더스트리얼디자인학과가 참여하는 교내 자율형 특성화사업단 소개 사이트입니다.
+명지대학교 산업경영공학과·비주얼커뮤니케이션디자인학과·인더스트리얼디자인학과가 참여하는 교내 자율형 특성화사업단 사이트입니다.
 
-## 사이트 구조
+2026-10 디자인 리뉴얼(원본: [mju-bilab/idea-renewal](https://github.com/mju-bilab/idea-renewal))이 적용되어 있습니다.
 
-| 페이지 | 설명 |
-|---|---|
-| [index.html](index.html) | 홈 |
-| [about.html](about.html) | 사업단소개 (추진 필요성 · 비전과 목표 · 대학발전계획 연계) |
-| [people.html](people.html) | 참여인력 |
-| [programs.html](programs.html) | 특성화계획 (마이크로디그리 · 4대 핵심 프로그램) |
-| [career.html](career.html) | 진로지도계획 · 산학협력계획 |
-| [performance.html](performance.html) | 사업비 집행계획 · 성과지표 |
-| [news.html](news.html) | 사업단소식 |
-| [contact.html](contact.html) | 오시는 길 |
+## 구조 — 두 부분이 한 저장소에 공존합니다
 
-## 기술 스택
+GitHub Pages는 이 저장소의 **루트를 그대로** 서비스합니다(`main` 브랜치, 빌드 서버 없음).
 
-순수 HTML / CSS / JavaScript로 제작된 정적 웹사이트입니다. 별도의 빌드 과정이 필요 없습니다.
+| 구분 | 파일 | 설명 |
+|---|---|---|
+| **리뉴얼 사이트** (React + Vite + Motion) | `index/about/people/programs/career/news.html`, `static/`, `brand/`, `orig/`, `photos/` | **빌드 결과물**입니다. 직접 고치지 마세요. 소스는 `site/` |
+| **리뉴얼 소스** | `site/` | `site/src`(화면), `site/public`(로고·사진), `site/*.html`(페이지별 메타) |
+| **운영 도구** (기존 그대로) | `admin.html`, `reserve.html`, `reserve-admin.html`, `data/`, `assets/`, `sw.js`, `manifest.webmanifest`, `firestore.rules` | 공지·자료·갤러리 관리, Firebase 라운지 예약, 업로드된 사진·파일 |
+| 이전 주소 호환 | `contact.html` | 메인의 `#contact`(오시는 길)로 이동시키는 안내 페이지 |
 
-- `assets/css/style.css` — 디자인 시스템 (색상, 타이포그래피, 컴포넌트)
-- `assets/js/main.js` — 모바일 내비게이션, 예산 그래프 애니메이션 등
-- `assets/img/` — 로고 및 배지 이미지
+사업단소식 글·사진은 `admin.html`에서 올리면 `data/*.json`과 `assets/` 에 커밋되고, 리뉴얼 사이트가 같은 출처에서 바로 읽어 보여줍니다.
 
-## 로컬에서 실행하기
+## 리뉴얼 사이트 수정·배포
 
 ```bash
-python -m http.server 8000
+cd site
+npm install          # 최초 1회
+npm run dev          # 개발 서버 (http://localhost:5173) — 데이터는 저장소 루트의 data/를 읽지 못하므로 화면 확인용
+npm run build        # 저장소 루트로 빌드 (static/ 를 비우고 다시 생성, 운영 파일은 건드리지 않음)
 ```
 
-이후 브라우저에서 `http://localhost:8000` 접속
+빌드 후 생성·변경된 파일을 함께 커밋·push 하면 배포됩니다.
+**빌드 결과물을 커밋하지 않으면 사이트가 바뀌지 않습니다.**
 
-## 배포
+- 페이지 주소는 `site/src/links.ts` 한 곳에서 관리합니다.
+- 교수진 사진: `site/public/people/<이름>.jpg`를 넣고 `site/src/pages/PeoplePage.tsx`의 `PHOTOS`에 이름을 추가합니다.
+- 페이지별 제목·설명·OG 메타는 `site/*.html`에서 고칩니다.
+- `site/vite.config.ts`의 `assetsDir: 'static'`, `emptyOutDir: false`는 루트의 `assets/`(업로드 사진)와
+  운영 파일을 지키기 위한 설정이므로 바꾸지 마세요.
 
-GitHub Pages를 통해 배포됩니다. `main` 브랜치에 푸시하면 자동으로 반영됩니다.
+## 로컬 확인 (빌드 결과 + 운영 도구 전체)
 
-## 아이콘 세트
+```bash
+python -m http.server 8000     # 저장소 루트에서. http://localhost:8000
+```
 
-`assets/icons/sprite.inc.html`이 SVG 아이콘 스프라이트의 **원본**입니다.
-`<symbol id="i-이름">` 형태이며, 규격은 24×24 viewBox · 1.7px 스트로크 · `currentColor`입니다.
+## 운영 도구 메모
 
-각 페이지는 이 스프라이트를 `<body>` 바로 뒤에 **인라인으로 복사해** 갖고 있고,
-사용처에서는 `<svg class="ic"><use href="#i-이름"></use></svg>`로 참조합니다.
-외부 파일 `<use href="파일.svg#id">`는 브라우저/오리진 제약이 있어 인라인을 택했습니다.
-
-아이콘을 추가·수정할 때는 `sprite.inc.html`을 먼저 고치고,
-그 내용을 아이콘을 쓰는 페이지(`index/about/programs/career/news/admin`)의
-스프라이트 블록에 함께 반영해야 합니다.
-아이콘을 쓰지 않는 페이지(`people/contact/reserve/reserve-admin`)에는 넣지 않습니다.
-
-> 헤더·티커·푸터·스프라이트가 페이지마다 복제되어 있습니다.
-> 내비게이션을 한 곳에서만 고치려면 정적 사이트 빌드(예: 11ty)로 파셜을 분리하는 작업이 필요합니다.
-
-## 히어로 사진 스트립 (index.html)
-
-첫 화면 오른쪽에서 공간·활동 사진 4장이 세로로 천천히 흐릅니다.
-
-- 사진 원본은 `assets/images/hero/<이름>_440x330.{jpg,webp}` / `_880x660.{jpg,webp}` 4종
-- **자동이 아니라 큐레이션입니다.** `gallery.json`을 읽지 않고 `index.html`에 직접 적어 둡니다.
-  첫 화면에 어떤 사진이 걸릴지는 골라야 하는 문제이지, 최신순으로 자동 결정할 일이 아닙니다.
-- 사진을 바꾸려면 ① 새 파일을 위 4종 규격으로 만들고 ② `index.html`의 `.hero-strip-group`
-  안 `<a class="hero-shot">` 블록을 수정합니다. 장수는 자유이며, `main.js`가 높이를
-  실측해 이음매 없이 반복하고 속도(장당 7.5초)도 자동으로 맞춥니다.
-- 접근성: 일시정지 버튼, 마우스·키보드 포커스 시 자동 정지, `prefers-reduced-motion`
-  환경에서는 정지 + 수동 스크롤로 동작합니다 (WCAG 2.2.2).
-
-### 사진 보정 스크립트
-
-업로드한 원본은 `.gitignore`로 저장소에서 제외하고, 웹용 파생본만 커밋합니다.
-톤 보정(화이트밸런스·노출·콘트라스트)과 리사이즈는 동일한 절차로 맞춰 스트립 안에서
-색온도가 튀지 않게 합니다.
+- `admin.html` — 비밀번호 잠금 + GitHub 토큰으로 공지·자료·갤러리를 등록/수정/삭제합니다. 검색엔진에는 노출되지 않습니다.
+- `reserve.html` — IDEA 라운지 예약(Firebase). `sw.js`는 예약 앱 셸만 캐시하며 다른 페이지는 가로채지 않습니다.
+- 리뉴얼 이전 디자인의 정적 페이지는 git 기록(`3e1dd96`)에 보존되어 있습니다. 문제가 생기면 그 커밋으로 되돌릴 수 있습니다.
+- `assets/css/style.css`, `assets/js/main.js`, `assets/js/news-loader.js`, `assets/icons/`는 이전 디자인의 자산입니다.
+  `admin.html`·`reserve*.html`이 일부를 계속 사용하므로 지우기 전에 사용처를 확인하세요.
