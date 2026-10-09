@@ -5,8 +5,8 @@
   "start_url": "/reserve.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2e7de0",
+  "background_color": "#faf6f2",
+  "theme_color": "#faf6f2",
   "lang": "ko",
   "icons": [
     { "src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },

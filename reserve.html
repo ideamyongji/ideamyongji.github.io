@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="라운지예약">
 <link rel="canonical" href="https://ideamyongji.github.io/reserve.html">
-<meta name="theme-color" content="#12233f">
+<meta name="theme-color" content="#faf6f2">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="명지대학교 IDEA 사업단">
 <meta property="og:locale" content="ko_KR">
@@ -30,35 +30,41 @@
 <meta name="twitter:description" content="IDEA 라운지(1공학관 513호) 테이블 예약 시스템입니다.">
 <meta name="twitter:image" content="https://ideamyongji.github.io/assets/img/og-cover.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-jp-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wanted-sans@1.0.3/fonts/webfonts/variable/split/WantedSansVariable.css">
 <link rel="stylesheet" href="assets/css/style.css?v=20260919">
+<link rel="stylesheet" href="assets/css/renewal-chrome.css?v=20261009">
 <style>
-  .booking-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .booking-table th, .booking-table td { border: 1px solid var(--border); padding: 6px; text-align: center; }
-  .booking-table thead th { background: var(--bg-soft-2); font-weight: 700; }
+  .booking-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+  .booking-table th, .booking-table td { border-bottom: 1px solid var(--border); padding: 6px; text-align: center; }
+  .booking-table thead th { background: rgba(201,169,160,.18); font-family: var(--rn-font-display); font-weight: 700; color: var(--rn-ink); }
+  .booking-table thead th:first-child { border-top-left-radius: 14px; }
+  .booking-table thead th:last-child { border-top-right-radius: 14px; }
+  .booking-table tbody tr:last-child td { border-bottom: 0; }
   .booking-table th:first-child, .booking-table td:first-child { white-space: nowrap; font-weight: 700; }
-  .slot-btn { width: 100%; min-height: 34px; padding: 8px 4px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: #fff; cursor: pointer; font-size: 12.5px; }
-  .slot-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue-700); }
+  .booking-wrap { padding: 12px; }
+  .slot-btn { width: 100%; min-height: 34px; padding: 8px 4px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,.85); color: var(--rn-ink); cursor: pointer; font-size: 12.5px; font-weight: 600; transition: border-color .2s, color .2s, background .2s; }
+  .slot-btn:hover:not(:disabled) { border-color: var(--rn-point); background: #fff; color: var(--rn-ink); }
   /* opacity로 흐리게 하면 글자 대비가 2.17:1까지 떨어져 무슨 상태인지 읽히지 않았습니다.
      투명도 대신 배경/글자색을 명시해 "이용 불가"임을 알리면서 대비를 유지합니다. */
   .slot-btn:disabled { cursor: not-allowed; background: var(--bg-soft); color: var(--ink-500); border-color: var(--border); }
   .slot-btn.is-booked { background: var(--bg-soft-2); color: var(--ink-700); }
-  .slot-btn.is-mine { background: rgba(46,125,224,.1); border-color: var(--blue); color: var(--blue-700); font-weight: 700; }
+  .slot-btn.is-mine { background: var(--rn-point); border-color: var(--rn-point); color: #fff; font-weight: 700; }
   /* 상태 범례: 색만으로 구분하지 않도록 표 위에 텍스트 범례를 함께 둡니다 */
   .slot-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; font-size: 12.5px; color: var(--ink-500); }
   .slot-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .slot-legend i { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--border); background: #fff; }
+  .slot-legend i { width: 14px; height: 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff; }
   .slot-legend i.booked { background: var(--bg-soft-2); }
-  .slot-legend i.mine { background: rgba(46,125,224,.1); border-color: var(--blue); }
+  .slot-legend i.mine { background: var(--rn-point); border-color: var(--rn-point); }
   .slot-legend i.off { background: var(--bg-soft); }
   @keyframes slot-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(46,125,224,.5); }
-    100% { box-shadow: 0 0 0 14px rgba(46,125,224,0); }
+    0% { box-shadow: 0 0 0 0 rgba(124,110,102,.5); }
+    100% { box-shadow: 0 0 0 14px rgba(124,110,102,0); }
   }
   .slot-btn.just-booked { animation: slot-pulse .7s ease-out; }
 
-  .page-hero { padding-bottom: 116px; }
-  .hero-overlap { margin-top: -64px; position: relative; z-index: 2; }
+  .account-panel { max-width: 460px; margin: 0 auto 48px; padding: clamp(22px, 5vw, 32px); }
+  .reserve-body { padding-top: 24px; }
 </style>
 </head>
 <body>
@@ -89,65 +95,83 @@
   <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.2v13.6L19 12z"/></symbol>
 </svg>
 
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="index.html" class="brand">
-      <img src="assets/img/logo-mark.png" alt="IDEA 사업단 로고">
-      <div class="brand-text">
-        <b>IDEA 사업단</b>
-        <span>인공지능 융합 디자인-엔지니어링 사업단</span>
+<div class="rn-ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+
+<!-- 리뉴얼 사이트(site/src/components/Chrome.tsx)의 내비와 같은 구성입니다. 메뉴를 바꾸면 양쪽을 함께 고쳐 주세요. -->
+<header class="rn-nav rn-glass">
+  <a href="./" class="rn-brand" aria-label="IDEA 사업단 홈">
+    <img src="brand/idea-mark.svg" alt="" width="26" height="30">
+    <span>IDEA</span>
+  </a>
+  <nav aria-label="주요 메뉴" class="rn-menu">
+    <div class="rn-item">
+      <a href="about.html" aria-haspopup="true" aria-expanded="false">사업단소개</a>
+      <div class="rn-drop">
+        <a href="about.html#vision">비전과 목표</a>
+        <a href="about.html#need">추진 필요성</a>
+        <a href="about.html#align">대학발전계획 연계</a>
+        <a href="people.html">참여인력</a>
       </div>
-    </a>
-    <ul class="nav">
-      <li><a href="about.html">사업단소개</a>
-        <ul class="dropdown">
-          <li><a href="about.html#vision">비전과 목표</a></li>
-          <li><a href="about.html#need">추진 필요성</a></li>
-          <li><a href="about.html#align">대학발전계획 연계</a></li>
-          <li><a href="people.html">참여인력</a></li>
-        </ul>
-      </li>
-      <li><a href="programs.html">특성화계획</a>
-        <ul class="dropdown">
-          <li><a href="programs.html#micro">마이크로디그리</a></li>
-          <li><a href="programs.html#program">4대 핵심 프로그램</a></li>
-          <li><a href="career.html#career">진로지도계획</a></li>
-          <li><a href="career.html#industry">산학협력계획</a></li>
-        </ul>
-      </li>
-      <li><a href="news.html">사업단소식</a>
-        <ul class="dropdown">
-          <li><a href="news.html#notice">공지사항</a></li>
-          <li><a href="news.html#archive">자료실</a></li>
-          <li><a href="news.html#gallery">포토갤러리</a></li>
-        </ul>
-      </li>
-      <li class="active"><a href="reserve.html">라운지 예약</a></li>
-      <li><a href="contact.html">오시는길</a></li>
-    </ul>
-    <div class="header-actions">
-      <img src="assets/img/mju-emblem.png" alt="명지대학교" class="mju-badge">
-      <span class="tag">2026 대학혁신지원사업 자율형 특성화사업단</span>
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
     </div>
-  </div>
+    <div class="rn-item">
+      <a href="programs.html" aria-haspopup="true" aria-expanded="false">특성화계획</a>
+      <div class="rn-drop">
+        <a href="programs.html#micro">마이크로디그리</a>
+        <a href="programs.html#program">4대 핵심 프로그램</a>
+        <a href="career.html#career">진로지도계획</a>
+        <a href="career.html#industry">산학협력계획</a>
+      </div>
+    </div>
+    <div class="rn-item">
+      <a href="news.html" aria-haspopup="true" aria-expanded="false">사업단소식</a>
+      <div class="rn-drop">
+        <a href="news.html#notice">공지사항</a>
+        <a href="news.html#archive">자료실</a>
+        <a href="news.html#gallery">포토갤러리</a>
+      </div>
+    </div>
+    <div class="rn-item"><a href="./#contact">오시는 길</a></div>
+  </nav>
+  <a href="reserve.html" class="rn-cta" aria-current="page">라운지 예약</a>
+  <button type="button" class="rn-burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="rn-mobile-menu"><i></i><i></i></button>
+  <span class="rn-progress-clip" aria-hidden="true"><i class="rn-progress"></i></span>
 </header>
+<div class="rn-mnav" id="rn-mobile-menu" inert>
+  <nav aria-label="전체 메뉴" class="rn-mnav-inner">
+    <div class="rn-mnav-group">
+      <a class="rn-mnav-top" href="about.html">사업단소개</a>
+      <div class="rn-mnav-sub"><a href="about.html#vision">비전과 목표</a><a href="about.html#need">추진 필요성</a><a href="about.html#align">대학발전계획 연계</a><a href="people.html">참여인력</a></div>
+    </div>
+    <div class="rn-mnav-group">
+      <a class="rn-mnav-top" href="programs.html">특성화계획</a>
+      <div class="rn-mnav-sub"><a href="programs.html#micro">마이크로디그리</a><a href="programs.html#program">4대 핵심 프로그램</a><a href="career.html#career">진로지도계획</a><a href="career.html#industry">산학협력계획</a></div>
+    </div>
+    <div class="rn-mnav-group">
+      <a class="rn-mnav-top" href="news.html">사업단소식</a>
+      <div class="rn-mnav-sub"><a href="news.html#notice">공지사항</a><a href="news.html#archive">자료실</a><a href="news.html#gallery">포토갤러리</a></div>
+    </div>
+    <div class="rn-mnav-group"><a class="rn-mnav-top" href="./#contact">오시는 길</a></div>
+    <a class="btn btn--primary rn-mnav-cta" href="reserve.html" aria-current="page">라운지 예약</a>
+  </nav>
+</div>
 
 <main id="main-content">
 
-<section class="page-hero">
-  <div class="container">
-    <h1>IDEA 라운지 예약</h1>
-    <p>1공학관 513호 · 팀별 활동 공간 · 테이블 4개(테이블당 4인)</p>
+<section class="rn-subhero">
+  <div class="rn-subhero-inner">
+    <nav class="rn-breadcrumb" aria-label="현재 위치"><a href="./">홈</a><span aria-hidden="true">/</span><span aria-current="page">라운지 예약</span></nav>
+    <h1 class="rn-subhero-title">IDEA 라운지 예약</h1>
+    <p class="rn-subhero-en">IDEA LOUNGE BOOKING</p>
+    <p class="rn-subhero-lead">1공학관 513호 · 팀별 활동 공간 · 테이블 4개(테이블당 4인)</p>
   </div>
 </section>
 
-<section class="section--tight">
+<section class="section--tight reserve-body">
   <div class="container">
 
-    <div class="hero-overlap">
+    <div>
 
-    <div id="login-panel" class="card glass-card" style="max-width:440px; margin: 0 auto 48px;">
+    <div id="login-panel" class="card account-panel">
       <h3 class="panel-title">Google 계정으로 로그인</h3>
       <p class="panel-hint">
         로그인 후 학번을 등록하면 예약을 이용할 수 있습니다.
@@ -156,7 +180,7 @@
       <button id="google-login-btn" type="button" class="btn btn--primary">Google 계정으로 로그인</button>
     </div>
 
-    <div id="profile-panel" class="card glass-card" style="max-width:440px; margin: 0 auto 48px;" hidden>
+    <div id="profile-panel" class="card account-panel" hidden>
       <h3 class="panel-title">학번 등록</h3>
       <p class="panel-hint">
         예약 이용을 위해 학번과 이름을 등록해 주세요. 마이크로디그리 참여 학생 명단과 대조해 우선권 여부를 확인합니다.
@@ -175,7 +199,7 @@
       </form>
     </div>
 
-    <div id="user-panel" class="card glass-card" style="max-width:440px; margin: 0 auto 48px;" hidden>
+    <div id="user-panel" class="card account-panel" hidden>
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
         <div>
           <p style="font-size:13px; color:var(--ink-700); margin-bottom:4px;">로그인됨</p>
@@ -248,7 +272,7 @@
         <span><i class="booked"></i>다른 사람 예약</span>
         <span><i class="off"></i>예약 불가</span>
       </p>
-      <div id="booking-grid-wrap" style="overflow-x:auto;"></div>
+      <div id="booking-grid-wrap" class="card booking-wrap" style="overflow-x:auto;"></div>
     </div>
 
     <div class="section-head" style="margin:56px 0 24px;">
@@ -261,53 +285,50 @@
 
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-brand-logos">
-          <img src="assets/img/logo-lockup-dark.png" alt="IDEA 사업단">
-          <div class="mju-affiliate"><img src="assets/img/mju-wordmark.png" alt="명지대학교 MYONGJI UNIVERSITY"></div>
-        </div>
-        <p>인공지능 융합 디자인-엔지니어링 사업단(IDEA)은 명지대학교 산업경영공학과·비주얼커뮤니케이션디자인학과·인더스트리얼디자인학과가 함께하는 교내 자율형 특성화사업단입니다.</p>
+<footer class="rn-footer">
+  <div class="rn-footer-top">
+    <div class="rn-footer-brand">
+      <div class="rn-footer-logos">
+        <img class="rn-footer-lockup" src="brand/idea-lockup.png" alt="IDEA 인공지능 융합 디자인-엔지니어링 사업단" width="705" height="188">
+        <img class="rn-footer-mju" src="orig/mju-wordmark.png" alt="명지대학교 MYONGJI UNIVERSITY" width="121" height="37">
       </div>
-      <div class="footer-col">
-        <h5>사업단소개</h5>
-        <ul>
-          <li><a href="about.html">비전과 목표</a></li>
-          <li><a href="about.html#need">추진 필요성</a></li>
-          <li><a href="people.html">참여인력</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>특성화계획</h5>
-        <ul>
-          <li><a href="programs.html">마이크로디그리</a></li>
-          <li><a href="career.html">진로·산학협력</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>바로가기</h5>
-        <ul>
-          <li><a href="reserve.html">라운지 예약</a></li>
-          <li><a href="news.html">사업단소식</a></li>
-          <li><a href="contact.html">오시는 길</a></li>
-          <li><a href="https://www.mju.ac.kr" target="_blank" rel="noopener">명지대학교</a></li>
-        </ul>
-      </div>
+      <p>인공지능 융합 디자인-엔지니어링 사업단(IDEA)은 명지대학교 산업경영공학과·비주얼커뮤니케이션디자인학과·인더스트리얼디자인학과가 함께하는 교내 자율형 특성화사업단입니다.</p>
     </div>
-    <div class="footer-bottom">
-      <div class="badges">
-        <img src="assets/img/innovation-badge.png" alt="대학혁신지원사업">
-      </div>
-      <small>© 2026 명지대학교 IDEA 사업단(인공지능 융합 디자인-엔지니어링 사업단). All rights reserved.</small>
-    </div>
+    <nav class="rn-footer-col" aria-label="사업단소개">
+      <h5>사업단소개</h5>
+      <ul>
+        <li><a href="about.html#vision">비전과 목표</a></li>
+        <li><a href="about.html#need">추진 필요성</a></li>
+        <li><a href="people.html">참여인력</a></li>
+      </ul>
+    </nav>
+    <nav class="rn-footer-col" aria-label="특성화계획">
+      <h5>특성화계획</h5>
+      <ul>
+        <li><a href="programs.html">마이크로디그리</a></li>
+        <li><a href="career.html">진로·산학협력</a></li>
+      </ul>
+    </nav>
+    <nav class="rn-footer-col" aria-label="바로가기">
+      <h5>바로가기</h5>
+      <ul>
+        <li><a href="reserve.html">라운지 예약</a></li>
+        <li><a href="news.html">사업단소식</a></li>
+        <li><a href="./#contact">오시는 길</a></li>
+        <li><a href="https://www.mju.ac.kr">명지대학교</a></li>
+        <li><a href="https://innov.mju.ac.kr">대학혁신지원사업단</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="rn-footer-bottom">
+    <img src="orig/innovation-badge.png" alt="대학혁신지원사업" width="117" height="54">
+    <small>© 2026 명지대학교 IDEA 사업단(인공지능 융합 디자인-엔지니어링 사업단). All rights reserved.</small>
   </div>
 </footer>
 
 <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
-<script src="assets/js/main.js?v=20260919"></script>
+<script src="assets/js/renewal-chrome.js?v=20261009"></script>
 <script type="module" src="assets/js/reserve.js?v=20260919"></script>
 <script>
   if ("serviceWorker" in navigator) {

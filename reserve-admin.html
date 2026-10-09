@@ -8,26 +8,32 @@
 <link rel="icon" href="assets/img/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="assets/img/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#faf6f2">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-jp-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wanted-sans@1.0.3/fonts/webfonts/variable/split/WantedSansVariable.css">
 <link rel="stylesheet" href="assets/css/style.css?v=20260919">
+<link rel="stylesheet" href="assets/css/renewal-chrome.css?v=20261009">
 <style>
-  .roster-chip { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:var(--bg-soft-2); font-size:13px; margin:4px; }
+  .roster-chip { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:rgba(201,169,160,.22); color:var(--rn-ink); font-size:13px; font-weight:600; margin:4px; }
   .roster-chip button { border:0; background:none; color:#d92d20; cursor:pointer; font-size:14px; line-height:1; padding:0; }
 </style>
 </head>
 <body>
 
-<div class="admin-bar">
-  <div class="container">
-    <div class="brand-mini">
-      <img src="assets/img/logo-mark.png" alt="IDEA 사업단">
-      라운지 예약 관리
-    </div>
-    <div style="display:flex; align-items:center; gap:18px;">
-      <button id="logout-btn" type="button" class="back" style="background:none; border:0; font:inherit; cursor:pointer;" hidden>로그아웃</button>
-      <a href="reserve.html" class="back">← 라운지 예약으로 돌아가기</a>
-    </div>
+<div class="rn-ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+
+<header class="rn-adminbar rn-glass">
+  <a href="./" class="rn-brand" aria-label="IDEA 사업단 홈">
+    <img src="brand/idea-mark.svg" alt="" width="26" height="30">
+    <span>IDEA</span>
+  </a>
+  <span class="rn-adminbar-title">라운지 예약 관리</span>
+  <div class="rn-adminbar-actions">
+    <a href="reserve.html" class="rn-chip">라운지 예약<span class="rn-hide-sm">으로 돌아가기</span></a>
+    <button id="logout-btn" type="button" class="rn-chip rn-chip--solid" hidden>로그아웃</button>
   </div>
-</div>
+</header>
 
 <section class="section--tight">
   <div class="container">
@@ -86,6 +92,8 @@
 
   </div>
 </section>
+
+<footer class="rn-minifoot">© 2026 명지대학교 IDEA 사업단(인공지능 융합 디자인-엔지니어링 사업단). All rights reserved.</footer>
 
 <script type="module" src="assets/js/reserve-admin.js?v=20260919"></script>
 </body>

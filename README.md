@@ -47,5 +47,7 @@ python -m http.server 8000     # 저장소 루트에서. http://localhost:8000
 - `admin.html` — 비밀번호 잠금 + GitHub 토큰으로 공지·자료·갤러리를 등록/수정/삭제합니다. 검색엔진에는 노출되지 않습니다.
 - `reserve.html` — IDEA 라운지 예약(Firebase). `sw.js`는 예약 앱 셸만 캐시하며 다른 페이지는 가로채지 않습니다.
 - 리뉴얼 이전 디자인의 정적 페이지는 git 기록(`3e1dd96`)에 보존되어 있습니다. 문제가 생기면 그 커밋으로 되돌릴 수 있습니다.
-- `assets/css/style.css`, `assets/js/main.js`, `assets/js/news-loader.js`, `assets/icons/`는 이전 디자인의 자산입니다.
-  `admin.html`·`reserve*.html`이 일부를 계속 사용하므로 지우기 전에 사용처를 확인하세요.
+- 운영 페이지(`admin.html`·`reserve.html`·`reserve-admin.html`)는 `assets/css/style.css` 위에 `assets/css/renewal-chrome.css`를 덧씌워
+  리뉴얼 디자인(색·글꼴·유리 카드·내비·푸터)으로 맞춥니다. `reserve.html`의 내비 동작은 `assets/js/renewal-chrome.js`가 담당합니다.
+  리뉴얼 사이트의 메뉴(`site/src/components/Chrome.tsx`)를 바꾸면 `reserve.html`의 내비·푸터도 함께 고쳐 주세요.
+- `assets/js/main.js`, `assets/js/news-loader.js`, `assets/icons/`는 이전 디자인의 자산으로, 현재 어느 페이지도 불러오지 않습니다.
