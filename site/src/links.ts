@@ -12,6 +12,7 @@ export const LINKS = {
   news: './news.html',
   reserve: `${ORIGIN}reserve.html`, // Firebase 기반 예약 시스템 (기존 페이지 그대로)
   contact: './#contact',
+  instagram: 'https://www.instagram.com/idea.myongji/',
   mju: 'https://www.mju.ac.kr',
   innov: 'https://innov.mju.ac.kr',
 }

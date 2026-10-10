@@ -595,12 +595,25 @@ div.news-row { cursor: default; }
 .news-toggle::before, .news-toggle::after { content: ''; position: absolute; left: 4px; right: 4px; top: 11px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform .4s var(--ease); }
 .news-toggle::after { transform: rotate(90deg); }
 .news-toggle.is-open::after { transform: rotate(0deg); }
-.news-download { justify-self: end; font-size: 20px; color: var(--point); }
 .news-body { overflow: hidden; }
 .news-body-inner { padding: 4px 8px 32px 148px; display: grid; gap: 14px; }
 .news-body-inner p { margin: 0; white-space: pre-line; color: var(--ink-soft); line-height: 1.75; word-break: keep-all; }
 .news-body-inner img { max-width: min(100%, 720px); height: auto; border-radius: 18px; }
 .news-file { justify-self: start; }
+.insta-head { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.insta-head p { margin: 0; color: var(--ink-soft); word-break: keep-all; }
+.insta-head b { color: var(--ink); }
+/* 인스타그램 임베드는 폭 326~540px로 그려지므로 그 범위에 맞춰 열 수를 정합니다 */
+.insta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 326px), 1fr)); gap: 20px; align-items: start; }
+.insta-item { min-width: 0; }
+.insta-item iframe, .insta-item .instagram-media { border-radius: 20px !important; box-shadow: var(--glass-shadow) !important; }
+/* embed.js는 iframe 폭을 지정하지 않아 기본 폭(→ 최소 326px)으로 남으므로 칸을 채우도록 지정합니다. 높이는 embed.js가 맞춥니다 */
+.insta-item iframe { width: 100% !important; max-width: 540px !important; margin: 0 auto !important; }
+/* embed.js가 막혔을 때 남는 링크 카드 */
+.insta-item blockquote.instagram-media { width: 100%; margin: 0; padding: 0; border: 1px solid var(--glass-border); background: linear-gradient(140deg, var(--glass-strong), var(--glass)); }
+.insta-item blockquote.instagram-media a { display: grid; gap: 8px; padding: 28px 24px; color: var(--ink); }
+.insta-item blockquote.instagram-media b { font-family: var(--font-display); font-size: 17px; word-break: keep-all; }
+.insta-item blockquote.instagram-media span { font-size: 14px; font-weight: 600; color: var(--point); }
 .gallery { columns: 3 280px; column-gap: 16px; }
 .gallery-card { position: relative; display: block; width: 100%; margin: 0 0 16px; padding: 0; break-inside: avoid; border-radius: 24px; overflow: hidden; cursor: zoom-in;
   box-shadow: 0 24px 50px -30px rgba(124,110,102,.6); }
@@ -628,7 +641,7 @@ div.news-row { cursor: default; }
   .news-row { grid-template-columns: 1fr 28px; gap: 6px 12px; }
   .news-date { grid-column: 1; }
   .news-main { grid-column: 1; }
-  .news-toggle, .news-download { grid-column: 2; grid-row: 1 / span 2; }
+  .news-toggle { grid-column: 2; grid-row: 1 / span 2; }
   .news-body-inner { padding: 0 8px 28px; }
   .lightbox { padding: 64px 12px; }
   .lb-nav { top: auto; bottom: 16px; translate: none; }

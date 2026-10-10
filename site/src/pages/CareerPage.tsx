@@ -176,7 +176,7 @@ export default function CareerPage() {
 
         <NextPage
           title="IDEA 사업단의 최근 소식이 궁금하신가요?"
-          desc="사업단의 최신 공지사항과 자료실을 확인해보세요"
+          desc="사업단의 최신 공지사항과 활동 소식을 확인해보세요"
           href={LINKS.news}
           label="사업단소식"
         />

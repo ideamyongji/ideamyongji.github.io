@@ -13,7 +13,7 @@ GitHub Pages는 이 저장소의 **루트를 그대로** 서비스합니다(`mai
 |---|---|---|
 | **리뉴얼 사이트** (React + Vite + Motion) | `index/about/people/programs/career/news.html`, `static/`, `brand/`, `orig/`, `photos/` | **빌드 결과물**입니다. 직접 고치지 마세요. 소스는 `site/` |
 | **리뉴얼 소스** | `site/` | `site/src`(화면), `site/public`(로고·사진), `site/*.html`(페이지별 메타) |
-| **운영 도구** (기존 그대로) | `admin.html`, `reserve.html`, `reserve-admin.html`, `data/`, `assets/`, `sw.js`, `manifest.webmanifest`, `firestore.rules` | 공지·자료·갤러리 관리, Firebase 라운지 예약, 업로드된 사진·파일 |
+| **운영 도구** (기존 그대로) | `admin.html`, `reserve.html`, `reserve-admin.html`, `data/`, `assets/`, `sw.js`, `manifest.webmanifest`, `firestore.rules` | 공지·인스타그램·갤러리 관리, Firebase 라운지 예약, 업로드된 사진·파일 |
 | 이전 주소 호환 | `contact.html` | 메인의 `#contact`(오시는 길)로 이동시키는 안내 페이지 |
 
 사업단소식 글·사진은 `admin.html`에서 올리면 `data/*.json`과 `assets/` 에 커밋되고, 리뉴얼 사이트가 같은 출처에서 바로 읽어 보여줍니다.
@@ -44,7 +44,9 @@ python -m http.server 8000     # 저장소 루트에서. http://localhost:8000
 
 ## 운영 도구 메모
 
-- `admin.html` — 비밀번호 잠금 + GitHub 토큰으로 공지·자료·갤러리를 등록/수정/삭제합니다. 검색엔진에는 노출되지 않습니다.
+- `admin.html` — 비밀번호 잠금 + GitHub 토큰으로 공지·인스타그램·갤러리를 등록/수정/삭제합니다. 검색엔진에는 노출되지 않습니다.
+  인스타그램은 게시물 링크만 `data/instagram.json`에 저장하고, 사업단소식 > 인스타그램 탭이 인스타그램 공식 임베드(embed.js)로 보여줍니다.
+  (예전 자료실 `#archive` 링크는 인스타그램 탭으로 열립니다)
 - `reserve.html` — IDEA 라운지 예약(Firebase). `sw.js`는 예약 앱 셸만 캐시하며 다른 페이지는 가로채지 않습니다.
 - 리뉴얼 이전 디자인의 정적 페이지는 git 기록(`3e1dd96`)에 보존되어 있습니다. 문제가 생기면 그 커밋으로 되돌릴 수 있습니다.
 - 운영 페이지(`admin.html`·`reserve.html`·`reserve-admin.html`)는 `assets/css/style.css` 위에 `assets/css/renewal-chrome.css`를 덧씌워

@@ -5,16 +5,17 @@ import { NextPage } from '../components/NextPage'
 import { SubHero } from '../components/SubHero'
 import { ease } from '../content'
 import { LINKS } from '../links'
-import { IMAGE_EXT_RE, abs, displayName, sizeOf, useData, type ArchiveItem, type GalleryItem, type Load, type Notice } from '../newsData'
+import { IMAGE_EXT_RE, abs, displayName, instagramPermalink, sizeOf, useData, type GalleryItem, type InstagramPost, type Load, type Notice } from '../newsData'
 
 // Posts are read live from the original site's data files, which admin.html (on the original site)
 // edits through the GitHub API — so the existing posting workflow keeps working unchanged.
 // Static copy (headings, empty/error messages) is verbatim from the original news.html.
 
-const TAB_IDS = ['notice', 'archive', 'gallery'] as const
+const TAB_IDS = ['notice', 'instagram', 'gallery'] as const
 type TabId = (typeof TAB_IDS)[number]
 const readHashTab = (): TabId => {
   const h = window.location.hash.slice(1)
+  if (h === 'archive') return 'instagram' // 자료실(#archive) 자리를 인스타그램이 대신하므로 옛 링크도 그쪽으로 엽니다
   return (TAB_IDS as readonly string[]).includes(h) ? (h as TabId) : 'notice'
 }
 
@@ -81,6 +82,66 @@ function NoticeRow({ n, i }: { n: Notice; i: number }) {
         )}
       </AnimatePresence>
     </li>
+  )
+}
+
+// Instagram's official embed script, loaded once and only when the 인스타그램 tab is first opened.
+declare global {
+  interface Window { instgrm?: { Embeds: { process: () => void } } }
+}
+let embedScript: Promise<void> | null = null
+const loadEmbedScript = () =>
+  (embedScript ??= new Promise<void>((resolve, reject) => {
+    const s = document.createElement('script')
+    s.src = 'https://www.instagram.com/embed.js'
+    s.async = true
+    s.onload = () => resolve()
+    s.onerror = () => {
+      embedScript = null
+      reject(new Error('instagram embed.js'))
+    }
+    document.body.appendChild(s)
+  }))
+
+const escapeHTML = (t: string) => t.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+// embed.js swaps each <blockquote> for an iframe, so the markup is handed over as raw HTML: React never
+// owns those nodes and can't trip over the swap. If the script is blocked, the blockquote stays as a link card.
+const embedHTML = (url: string, caption?: string) =>
+  `<blockquote class="instagram-media" data-instgrm-permalink="${url}?utm_source=ig_embed" data-instgrm-version="14">` +
+  `<a href="${url}" target="_blank" rel="noopener">${caption ? `<b>${escapeHTML(caption)}</b>` : ''}<span>Instagram에서 보기 ↗</span></a></blockquote>`
+
+function InstagramFeed({ posts }: { posts: InstagramPost[] }) {
+  const valid = posts.filter((p) => instagramPermalink(p.url))
+  useEffect(() => {
+    let alive = true
+    loadEmbedScript()
+      .then(() => alive && window.instgrm?.Embeds.process())
+      .catch(() => {}) // 차단되면 링크 카드로 남습니다
+    return () => {
+      alive = false
+    }
+  }, [posts])
+  return (
+    <>
+      <div className="insta-head">
+        <p>
+          사업단 인스타그램 <b>@idea.myongji</b>에 올라온 활동 소식입니다
+        </p>
+        <a className="btn btn-glass" href={LINKS.instagram} target="_blank" rel="noopener">
+          인스타그램에서 더 보기
+          <svg className="btn-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>
+        </a>
+      </div>
+      {valid.length ? (
+        <div className="insta-grid">
+          {valid.map((p) => (
+            <div key={p.url} className="insta-item" dangerouslySetInnerHTML={{ __html: embedHTML(p.url, p.caption) }} />
+          ))}
+        </div>
+      ) : (
+        <p className="list-empty">등록된 게시물이 없습니다. 인스타그램 게시물이 등록되면 이곳에 표시됩니다.</p>
+      )}
+    </>
   )
 }
 
@@ -171,14 +232,14 @@ function Lightbox({ album, onClose }: { album: GalleryItem; onClose: () => void 
 
 export default function NewsPage() {
   const notices = useData<Notice>('news.json')
-  const archive = useData<ArchiveItem>('archive.json', false)
+  const instagram = useData<InstagramPost>('instagram.json')
   const gallery = useData<GalleryItem>('gallery.json')
   const [album, setAlbum] = useState<GalleryItem | null>(null)
   const [tab, setTab] = useState<TabId>(() => readHashTab())
   const count = (d: Load<unknown>) => (d.state === 'ok' ? d.items.length : undefined)
   const TABS: { id: TabId; label: string; count?: number }[] = [
     { id: 'notice', label: '공지사항', count: count(notices) },
-    { id: 'archive', label: '자료실', count: count(archive) },
+    { id: 'instagram', label: '인스타그램', count: count(instagram) },
     { id: 'gallery', label: '포토갤러리', count: count(gallery) },
   ]
   // Keep the tab in the URL hash so links like news.html#gallery (used on the original site) open it.
@@ -208,7 +269,7 @@ export default function NewsPage() {
         <SubHero
           title="사업단소식"
           en="NEWS"
-          lead="IDEA 사업단의 공지사항과 자료실을 안내합니다"
+          lead="IDEA 사업단의 공지사항과 활동 소식을 안내합니다"
           toc={[]}
         />
 
@@ -260,30 +321,11 @@ export default function NewsPage() {
             ))}
                 </>
               )}
-              {tab === 'archive' && (
+              {tab === 'instagram' && (
                 <>
-          {archive.state === 'loading' && <Skeleton rows={2} />}
-          {archive.state === 'error' && <p className="list-empty">자료실을 불러오지 못했습니다.</p>}
-          {archive.state === 'ok' &&
-            (archive.items.length ? (
-              <ul className="news-list">
-                {archive.items.map((a) => (
-                  <li key={a.path} className="news-entry">
-                    <a className="news-row" href={abs(a.path)} download>
-                      <span className="news-date">{a.date}</span>
-                      <span className="news-main">
-                        <span className="news-cat">자료</span>
-                        <b>{a.title}</b>
-                      </span>
-                      <span className="news-download" aria-hidden="true">↓</span>
-                      <span className="sr-only">다운로드</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="list-empty">등록된 자료가 없습니다. 자료가 등록되면 이곳에 표시됩니다.</p>
-            ))}
+          {instagram.state === 'loading' && <Skeleton rows={2} />}
+          {instagram.state === 'error' && <p className="list-empty">인스타그램 게시물을 불러오지 못했습니다.</p>}
+          {instagram.state === 'ok' && <InstagramFeed posts={instagram.items} />}
                 </>
               )}
               {tab === 'gallery' && (

@@ -1,5 +1,5 @@
-// IDEA 사업단 관리자 페이지 — GitHub Contents API를 통해 data/news.json, data/archive.json,
-// assets/files/ 를 직접 커밋합니다. 토큰은 이 브라우저의 localStorage에만 저장되며 외부로 전송되지 않습니다.
+// IDEA 사업단 관리자 페이지 — GitHub Contents API를 통해 data/news.json, data/instagram.json,
+// data/gallery.json 과 업로드 파일(assets/)을 직접 커밋합니다. 토큰은 이 브라우저의 localStorage에만 저장되며 외부로 전송되지 않습니다.
 
 const REPO_OWNER = 'ideamyongji';
 const REPO_NAME = 'ideamyongji.github.io';
@@ -285,48 +285,66 @@ async function deleteNotice(index) {
   }
 }
 
-// ---------- 자료실 ----------
+// ---------- 인스타그램 ----------
+// 게시물 링크만 저장하고, 사이트(news.html)가 인스타그램 공식 임베드로 그려 보여줍니다.
 
-async function renderArchiveList() {
-  const listEl = $('#archive-admin-list');
+function escapeHtml(text) {
+  return String(text ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+}
+
+// 앱의 "링크 복사"로 받은 여러 형태를 https://www.instagram.com/{p|reel|tv}/{코드}/ 하나로 정리합니다.
+//  예) https://www.instagram.com/idea.myongji/p/ABC123/?igsh=xxxx → https://www.instagram.com/p/ABC123/
+//      https://instagram.com/reels/ABC123 → https://www.instagram.com/reel/ABC123/
+function normalizeInstagramUrl(raw) {
+  let u;
+  try { u = new URL(String(raw).trim()); } catch (e) { return null; }
+  if (!/^(www\.|m\.)?instagram\.com$/i.test(u.hostname)) return null;
+  const m = u.pathname.match(/^\/(?:[A-Za-z0-9._]+\/)?(p|reel|reels|tv)\/([A-Za-z0-9_-]+)\/?$/);
+  if (!m) return null;
+  const kind = m[1] === 'reels' ? 'reel' : m[1];
+  return `https://www.instagram.com/${kind}/${m[2]}/`;
+}
+
+async function renderInstagramList() {
+  const listEl = $('#instagram-admin-list');
   listEl.innerHTML = '<p style="color:var(--ink-500);">불러오는 중…</p>';
   try {
-    const { content } = await getJSONFile('data/archive.json');
+    const { content } = await getJSONFile('data/instagram.json');
     if (!content.length) {
-      listEl.innerHTML = '<p style="color:var(--ink-500);">등록된 자료가 없습니다.</p>';
+      listEl.innerHTML = '<p style="color:var(--ink-500);">등록된 게시물이 없습니다.</p>';
       return;
     }
-    listEl.innerHTML = content.map((item, i) => `
+    // 공지사항과 같이 최신 날짜순으로 보여주되 삭제 버튼은 저장된 배열의 원래 인덱스를 가리킵니다.
+    const sorted = content
+      .map((item, i) => ({ item, i }))
+      .sort((a, b) => dateSortValue(b.item.date) - dateSortValue(a.item.date));
+    listEl.innerHTML = sorted.map(({ item, i }) => `
       <div class="admin-row">
-        <div>
-          <div class="title">${item.title}</div>
-          <div class="meta">${item.date} · ${item.fileName}</div>
+        <div style="min-width:0;">
+          <div class="title">${escapeHtml(item.caption || '(메모 없음)')}</div>
+          <div class="meta">${escapeHtml(item.date)} · <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="word-break:break-all;">${escapeHtml(item.url.replace('https://www.instagram.com', ''))}</a></div>
         </div>
-        <button class="btn btn--danger btn--sm" data-delete-archive="${i}">삭제</button>
+        <button class="btn btn--danger btn--sm" data-delete-instagram="${i}">삭제</button>
       </div>
     `).join('');
   } catch (e) {
-    listEl.innerHTML = `<p style="color:#d92d20;">${e.message}</p>`;
+    listEl.innerHTML = `<p style="color:#d92d20;">${escapeHtml(e.message)}</p>`;
   }
 }
 
-async function addArchive(date, title, file) {
-  const path = await uploadFileAndGetPath(file, 'assets/files', `자료 업로드: ${title}`);
-  const { sha, content } = await getJSONFile('data/archive.json');
-  content.unshift({ date, title, fileName: file.name, path });
-  await putJSONFile('data/archive.json', content, sha, `자료실 등록: ${title}`);
+async function addInstagramPost(date, url, caption) {
+  const { sha, content } = await getJSONFile('data/instagram.json');
+  if (content.some((item) => item.url === url)) throw new Error('이미 등록된 게시물입니다.');
+  const entry = { date, url };
+  if (caption) entry.caption = caption;
+  content.unshift(entry);
+  await putJSONFile('data/instagram.json', content, sha, `인스타그램 게시물 등록: ${caption || url}`);
 }
 
-async function deleteArchive(index) {
-  const { sha, content } = await getJSONFile('data/archive.json');
+async function deleteInstagramPost(index) {
+  const { sha, content } = await getJSONFile('data/instagram.json');
   const removed = content.splice(index, 1)[0];
-  await putJSONFile('data/archive.json', content, sha, `자료실 삭제: ${removed ? removed.title : ''}`);
-  if (removed) {
-    try {
-      const fileData = await gh(`/contents/${removed.path}?ref=${BRANCH}`);
-      if (fileData) await deleteFile(removed.path, fileData.sha, `자료 파일 삭제: ${removed.fileName}`);
-    } catch (e) { /* 파일 삭제 실패는 무시 (목록에서는 이미 제거됨) */ }
-  }
+  await putJSONFile('data/instagram.json', content, sha, `인스타그램 게시물 삭제: ${removed ? (removed.caption || removed.url) : ''}`);
 }
 
 // ---------- 포토갤러리 ----------
@@ -457,7 +475,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem(TOKEN_KEY, v);
     tokenStatus.textContent = '토큰이 저장되었습니다. (이 브라우저에만 저장됩니다)';
     renderNoticeList();
-    renderArchiveList();
+    renderInstagramList();
     renderGalleryList();
   });
 
@@ -567,41 +585,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  const archiveForm = $('#archive-form');
-  const archiveStatus = $('#archive-status');
-  archiveForm.addEventListener('submit', async (e) => {
+  const instagramForm = $('#instagram-form');
+  const instagramStatus = $('#instagram-status');
+  const instagramDate = $('#instagram-date');
+  const setTodayDate = () => {
+    const d = new Date();
+    instagramDate.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  setTodayDate();
+  instagramForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    hideStatus(archiveStatus);
-    const date = $('#archive-date').value.replace(/-/g, '.');
-    const title = $('#archive-title').value.trim();
-    const file = $('#archive-file').files[0];
-    if (!date || !title || !file) { showStatus(archiveStatus, '날짜, 제목, 파일을 모두 선택하세요.', 'error'); return; }
-    if (file.size > MAX_UPLOAD_BYTES) {
-      showStatus(archiveStatus, `파일 용량이 너무 큽니다. GitHub API 제한으로 ${Math.floor(MAX_UPLOAD_BYTES / 1024 / 1024)}MB 이하만 업로드할 수 있습니다.`, 'error');
+    hideStatus(instagramStatus);
+    const url = normalizeInstagramUrl($('#instagram-url').value);
+    const date = instagramDate.value.replace(/-/g, '.');
+    const caption = $('#instagram-caption').value.trim();
+    if (!url) {
+      showStatus(instagramStatus, '인스타그램 게시물 링크가 아닙니다. 게시물의 공유 → 링크 복사로 받은 주소(https://www.instagram.com/p/… 또는 /reel/…)를 붙여넣으세요.', 'error');
       return;
     }
-    const btn = archiveForm.querySelector('button[type="submit"]');
-    btn.disabled = true; btn.textContent = '업로드 중…';
+    if (!date) { showStatus(instagramStatus, '날짜를 입력하세요.', 'error'); return; }
+    const btn = instagramForm.querySelector('button[type="submit"]');
+    btn.disabled = true; btn.textContent = '게시 중…';
     try {
-      await addArchive(date, title, file);
-      showStatus(archiveStatus, '자료가 등록되었습니다. 30~60초 후 사이트에 반영됩니다.', 'success');
-      archiveForm.reset();
-      await renderArchiveList();
+      await addInstagramPost(date, url, caption);
+      showStatus(instagramStatus, '게시물이 등록되었습니다. 30~60초 후 사이트에 반영됩니다.', 'success');
+      instagramForm.reset();
+      setTodayDate();
+      await renderInstagramList();
     } catch (err) {
-      showStatus(archiveStatus, err.message, 'error');
+      showStatus(instagramStatus, err.message, 'error');
     } finally {
       btn.disabled = false; btn.textContent = '게시하기';
     }
   });
 
-  $('#archive-admin-list').addEventListener('click', async (e) => {
-    const btn = e.target.closest('[data-delete-archive]');
+  $('#instagram-admin-list').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-delete-instagram]');
     if (!btn) return;
-    if (!confirm('이 자료를 삭제할까요? (업로드된 파일도 함께 삭제됩니다)')) return;
+    if (!confirm('이 게시물을 사이트에서 내릴까요? (인스타그램의 원본 게시물은 그대로 남습니다)')) return;
     btn.disabled = true;
     try {
-      await deleteArchive(Number(btn.dataset.deleteArchive));
-      await renderArchiveList();
+      await deleteInstagramPost(Number(btn.dataset.deleteInstagram));
+      await renderInstagramList();
     } catch (err) {
       alert(err.message);
       btn.disabled = false;
@@ -747,7 +772,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     $('#admin-content').hidden = false;
     $('#lock-now').hidden = false;
     renderNoticeList();
-    renderArchiveList();
+    renderInstagramList();
     renderGalleryList();
   }
 

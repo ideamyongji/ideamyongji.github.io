@@ -35,7 +35,7 @@ const NAV: NavItem[] = [
     page: 'news',
     children: [
       { href: `${LINKS.news}#notice`, label: '공지사항' },
-      { href: `${LINKS.news}#archive`, label: '자료실' },
+      { href: `${LINKS.news}#instagram`, label: '인스타그램' },
       { href: `${LINKS.news}#gallery`, label: '포토갤러리' },
     ],
   },
@@ -253,6 +253,7 @@ const FOOTER_COLS = [
   { h: '바로가기', links: [
     { t: '라운지 예약', href: LINKS.reserve },
     { t: '사업단소식', href: LINKS.news },
+    { t: '인스타그램', href: LINKS.instagram },
     { t: '오시는 길', href: LINKS.contact },
     { t: '명지대학교', href: LINKS.mju },
     { t: '대학혁신지원사업단', href: LINKS.innov },

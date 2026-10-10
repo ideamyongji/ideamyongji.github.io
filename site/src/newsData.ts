@@ -5,7 +5,8 @@ import { ORIGIN } from './links'
 // original admin.html through the GitHub API, so posting keeps working without touching this site.
 
 export type Notice = { date: string; category: string; title: string; content?: string; attachment?: string }
-export type ArchiveItem = { date: string; title: string; path: string }
+// 인스타그램 게시물: admin.html이 링크를 https://www.instagram.com/{p|reel}/{코드}/ 형태로 정리해 저장합니다.
+export type InstagramPost = { date: string; url: string; caption?: string }
 export type GalleryItem = { date: string; caption?: string; images?: string[]; image?: string }
 export type Load<T> = { state: 'loading' } | { state: 'error' } | { state: 'ok'; items: T[] }
 
@@ -19,6 +20,10 @@ export const sizeOf = (path?: string) => {
   const m = /_(\d{2,5})x(\d{2,5})\.[a-z0-9]+$/i.exec(path || '')
   return m ? { width: Number(m[1]), height: Number(m[2]) } : {}
 }
+
+// Only genuine Instagram post/reel links are embedded; anything else in the data file is skipped.
+const INSTAGRAM_POST_RE = /^https:\/\/www\.instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)\/$/
+export const instagramPermalink = (url: string) => (INSTAGRAM_POST_RE.test(url) ? url : null)
 
 // Upload prefix "timestamp_" is stripped for display, as on the original site.
 export const displayName = (path: string) => (path.split('/').pop() || path).replace(/^\d+_/, '')
