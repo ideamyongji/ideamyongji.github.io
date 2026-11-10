@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>리플렛 | IDEA 사업단</title>
+<meta name="description" content="IDEA 사업단과 AI 디자인-엔지니어링 융합마이크로디그리를 소개하는 리플렛(A5 12쪽)">
+<meta name="theme-color" content="#faf6f2">
+<link rel="icon" type="image/svg+xml" href="../brand/idea-mark.svg">
+<link rel="canonical" href="https://ideamyongji.github.io/leaflet/">
+<meta property="og:title" content="IDEA 사업단 · 융합마이크로디그리 리플렛">
+<meta property="og:description" content="세 사람이 하던 일, 이제 한 사람이 합니다. 기획·디자인·개발을 모두 해내는 IDEA DesignEer가 되는 12학점.">
+<meta property="og:image" content="https://ideamyongji.github.io/leaflet/pages/p01.webp">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-jp-dynamic-subset.min.css">
+<style>
+  /* 리플렛 웹 보기: 쪽 이미지를 책처럼 보여 줌 (PC는 펼침면, 휴대폰은 한 쪽씩). PDF는 내려받기 버튼으로 */
+  :root { --bg: #faf6f2; --ink: #3e3430; --muted: #5e524c; --point: #7c6e66; --line: #e8d8ce; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Pretendard JP Variable', 'Pretendard Variable', Pretendard, -apple-system, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; line-height: 1.6; word-break: keep-all; }
+  a { color: inherit; }
+  .bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: rgba(250, 246, 242, .92); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+  .bar .home { display: flex; align-items: center; gap: 8px; font-weight: 800; text-decoration: none; letter-spacing: -.02em; min-height: 44px; }
+  .bar .home img { width: 26px; height: 30px; }
+  .bar h1 { margin: 0; font-size: 15px; font-weight: 600; color: var(--muted); flex: 1; min-width: 180px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+  .btn.solid { background: var(--point); color: #fff; }
+  .btn.ghost { border: 1px solid var(--line); background: #fff; }
+  main { max-width: 1240px; margin: 0 auto; padding: 32px 16px 64px; }
+  .intro { text-align: center; margin: 0 auto 32px; max-width: 640px; color: var(--muted); font-size: 15px; }
+  .book { display: grid; gap: 28px; justify-items: center; }
+  .spread { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; max-width: 1100px; box-shadow: 0 20px 50px -24px rgba(62, 52, 48, .45); }
+  .spread.single { grid-template-columns: minmax(0, 1fr); max-width: 550px; }
+  .spread img { display: block; width: 100%; height: auto; background: #fff; }
+  .num { text-align: center; font-size: 13px; color: var(--muted); margin-top: -18px; }
+  @media (max-width: 760px) {
+    .spread, .spread.single { grid-template-columns: minmax(0, 1fr); max-width: 550px; gap: 16px; box-shadow: none; }
+    .spread img { box-shadow: 0 12px 30px -18px rgba(62, 52, 48, .5); }
+    .num { margin-top: -12px; }
+  }
+  footer { text-align: center; font-size: 13px; color: var(--muted); padding: 0 16px 48px; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="home" href="../"><img src="../brand/idea-mark.svg" alt="">IDEA</a>
+  <h1>사업단 · AI 디자인-엔지니어링 융합마이크로디그리 리플렛</h1>
+  <a class="btn solid" href="idea-leaflet-2026.pdf" download="IDEA_리플렛_2026.pdf">PDF 내려받기</a>
+  <a class="btn ghost" href="../programs.html#micro">특성화계획</a>
+</header>
+<main>
+  <p class="intro">A5 12쪽 리플렛입니다. 인쇄용 PDF는 위의 ‘PDF 내려받기’로 받을 수 있습니다.</p>
+  <div class="book">
+    <div class="spread single"><img src="pages/p01.webp" width="1240" height="1757" alt="표지: 세 사람이 하던 일, 이제 한 사람이 합니다. 기획·디자인·개발을 모두 해내는 사람이 되는 12학점"></div>
+    <p class="num">표지</p>
+    <div class="spread"><img src="pages/p02.webp" width="1240" height="1757" loading="lazy" alt="2쪽: 기획서만, 시안만, 코드만으로는 부족한 시대. 산업계 채용 변화 근거 세 가지"><img src="pages/p03.webp" width="1240" height="1757" loading="lazy" alt="3쪽: AI는 만드는 시간을 줄였습니다. 이제 필요한 사람은 무엇을, 왜, 어떻게 만들지 처음부터 끝까지 아는 한 사람입니다"></div>
+    <p class="num">2~3쪽</p>
+    <div class="spread"><img src="pages/p04.webp" width="1240" height="1757" loading="lazy" alt="4쪽: 기획(p)·디자인(d)·개발(e) 세 갈래의 역량이 하나의 아이디어로 모입니다"><img src="pages/p05.webp" width="1240" height="1757" loading="lazy" alt="5쪽: 인공지능 융합 디자인-엔지니어링 사업단 소개, 미션과 비전, 참여 학과 3개·재학생 409명·교수 15명"></div>
+    <p class="num">4~5쪽</p>
+    <div class="spread"><img src="pages/p06.webp" width="1240" height="1757" loading="lazy" alt="6쪽: 인재상 IDEA DesignEer — Innovative, Data-informed, Ethical, Agentic"><img src="pages/p07.webp" width="1240" height="1757" loading="lazy" alt="7쪽: 4과목 12학점, 신청서는 필요 없습니다. Knowledge·Tools·Experience 3단계"></div>
+    <p class="num">6~7쪽</p>
+    <div class="spread"><img src="pages/p08.webp" width="1240" height="1757" loading="lazy" alt="8쪽: 융합마이크로디그리 교과목 네 과목과 이수 방법"><img src="pages/p09.webp" width="1240" height="1757" loading="lazy" alt="9쪽: 4대 프로그램(부트캠프·미니해커톤·네트워크·라운지)과 미니 해커톤 시상식 사진"></div>
+    <p class="num">8~9쪽</p>
+    <div class="spread"><img src="pages/p10.webp" width="1240" height="1757" loading="lazy" alt="10쪽: 2026 활동 — 디자인 역량 강화 교육, 직무 전문가 특강, AI 역량 강화 교육 1·2회차 자료 표지"><img src="pages/p11.webp" width="1240" height="1757" loading="lazy" alt="11쪽: 참여 안내 — 학과별 참여 재학생, 자주 묻는 질문, 교육 현장 사진"></div>
+    <p class="num">10~11쪽</p>
+    <div class="spread single"><img src="pages/p12.webp" width="1240" height="1757" loading="lazy" alt="뒤표지: 그 한 사람, 당신이 될 수 있습니다. 주소·라운지·문의처와 홈페이지 QR 코드"></div>
+    <p class="num">뒤표지</p>
+  </div>
+</main>
+<footer>문의: 인공지능 융합 디자인-엔지니어링 사업단 · 031-330-6954 · idea.myongji@gmail.com</footer>
+</body>
+</html>

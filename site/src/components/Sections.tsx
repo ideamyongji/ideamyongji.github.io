@@ -259,8 +259,8 @@ export function Curriculum() {
         ))}
       </ol>
       <div className="hero-cta leaflet-cta">
-        <a className="btn btn-glass" href={LINKS.leaflet} target="_blank" rel="noopener">
-          리플렛 보기 (PDF)
+        <a className="btn btn-glass" href={LINKS.leaflet}>
+          리플렛 보기
           <svg className="btn-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>
         </a>
       </div>
@@ -398,7 +398,7 @@ export function Finale() {
           <div className="hero-cta">
             <a className="btn btn-solid" href={LINKS.reserve}>라운지 예약</a>
             <a className="btn btn-glass" href={LINKS.news}>사업단 소식</a>
-            <a className="btn btn-glass" href={LINKS.leaflet} target="_blank" rel="noopener">리플렛 보기</a>
+            <a className="btn btn-glass" href={LINKS.leaflet}>리플렛 보기</a>
           </div>
         </motion.div>
       </section>

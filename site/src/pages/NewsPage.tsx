@@ -29,6 +29,13 @@ function Skeleton({ rows }: { rows: number }) {
   )
 }
 
+// 공지 본문의 https 주소는 누를 수 있는 링크로 보여 줌 (예: 리플렛 보기 주소)
+const URL_RE = /(https?:\/\/[^\s)]+)/g
+const linkify = (text: string) =>
+  text.split(URL_RE).map((part, i) =>
+    i % 2 === 1 ? (<a key={i} href={part}>{part}</a>) : part,
+  )
+
 function NoticeRow({ n, i }: { n: Notice; i: number }) {
   const [open, setOpen] = useState(false)
   const hasBody = !!(n.content?.trim() || n.attachment)
@@ -82,7 +89,7 @@ function NoticeRow({ n, i }: { n: Notice; i: number }) {
                 ?.split(/\n{2,}/)
                 .filter((p) => p.trim())
                 .map((p, k) => (
-                  <p key={k}>{p}</p>
+                  <p key={k}>{linkify(p)}</p>
                 ))}
             </div>
           </motion.div>

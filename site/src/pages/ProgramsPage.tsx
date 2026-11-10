@@ -138,8 +138,8 @@ export default function ProgramsPage() {
           <p className="section-lead">Knowledge - Tools - Experience 3단계로 설계된 융합전공/모듈형 교육과정입니다</p>
           <MicroFlow />
           <div className="hero-cta leaflet-cta">
-            <a className="btn btn-glass" href={LINKS.leaflet} target="_blank" rel="noopener">
-              리플렛 보기 (PDF)
+            <a className="btn btn-glass" href={LINKS.leaflet}>
+              리플렛 보기
               <svg className="btn-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>
             </a>
           </div>
