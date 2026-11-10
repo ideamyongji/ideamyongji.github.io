@@ -67,9 +67,16 @@ function NoticeRow({ n, i }: { n: Notice; i: number }) {
                 (IMAGE_EXT_RE.test(n.attachment) ? (
                   <img src={abs(n.attachment)} {...sizeOf(n.attachment)} alt={n.title} loading="lazy" decoding="async" />
                 ) : (
-                  <a className="btn btn-glass news-file" href={abs(n.attachment)} download>
-                    {displayName(n.attachment)} 다운로드
-                  </a>
+                  /\.pdf$/i.test(n.attachment) ? (
+                    // PDF(리플렛 등)는 내려받지 않고 새 탭에서 바로 열어 봄
+                    <a className="btn btn-glass news-file" href={abs(n.attachment)} target="_blank" rel="noopener">
+                      {displayName(n.attachment)} 열어보기
+                    </a>
+                  ) : (
+                    <a className="btn btn-glass news-file" href={abs(n.attachment)} download>
+                      {displayName(n.attachment)} 다운로드
+                    </a>
+                  )
                 ))}
               {n.content
                 ?.split(/\n{2,}/)

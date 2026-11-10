@@ -687,3 +687,6 @@ div.news-row { cursor: default; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* 리플렛 보기 버튼 (메인 마이크로디그리 · 특성화계획) */
+.leaflet-cta { justify-content: center; margin-top: 48px; }
